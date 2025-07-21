@@ -2,12 +2,13 @@ package db
 
 import (
 	"fmt"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
-	"log"
 	"subscription-service/internal/config"
 	"subscription-service/internal/model"
+	"subscription-service/pkg/logger"
 	"time"
+
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 func InitDB() *gorm.DB {
@@ -24,17 +25,17 @@ func InitDB() *gorm.DB {
 		if err == nil {
 			break
 		}
-		log.Println("Ожидание подключения к БД...")
+		logger.Log.Println("Ожидание подключения к БД...")
 		time.Sleep(2 * time.Second)
 	}
 
 	if err != nil {
-		log.Fatal("Не удалось подключиться к БД после нескольких попыток: ", err)
+		logger.Log.Fatal("Не удалось подключиться к БД после нескольких попыток: ", err)
 	}
 
 	err = db.AutoMigrate(&model.Subscription{})
 	if err != nil {
-		log.Fatal("Не удалось выполнить миграции: ", err)
+		logger.Log.Fatal("Не удалось выполнить миграции: ", err)
 	}
 
 	return db

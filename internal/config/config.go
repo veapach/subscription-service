@@ -1,9 +1,10 @@
 package config
 
 import (
-	"github.com/joho/godotenv"
-	"log"
 	"os"
+	"subscription-service/pkg/logger"
+
+	"github.com/joho/godotenv"
 )
 
 type Config struct {
@@ -18,7 +19,7 @@ type Config struct {
 func LoadConfig() *Config {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Ошибка при загрузке .env")
+		logger.Log.Fatal("Ошибка при загрузке .env")
 	}
 
 	return &Config{
